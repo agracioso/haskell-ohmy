@@ -285,8 +285,9 @@
 
         // Check if completed, unlocked, or locked
         const isCompleted = completed.includes(key);
-        // A module is unlocked if it's the first one OR if the previous module is completed
-        const isUnlocked = i === 1 || completed.includes('m' + (i - 1));
+        // A module is unlocked if it's M1, M4, M7 OR if the previous module is completed
+        const alwaysOpen = [1, 4, 7];
+        const isUnlocked = alwaysOpen.includes(i) || completed.includes('m' + (i - 1));
 
         // Get inner elements
         const numCircle = card.querySelector('div > div:first-child');

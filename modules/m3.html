@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Módulo 3: Funções e Tipos - Haskell</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            haskell: { primary: '#669632', secondary: '#F4F4F4' },
+            ohmy: { primary: '#F56FAD', secondary: '#2D2926' }
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-haskell-secondary text-haskell-primary min-h-screen flex flex-col justify-between p-6 md:p-10">
+
+  <div>
+    <!-- Navigation Breadcrumbs -->
+    <nav class="max-w-4xl mx-auto mb-6 flex items-center justify-between text-sm">
+      <a href="../index.html" class="flex items-center gap-2 font-semibold hover:underline opacity-80 hover:opacity-100 transition">
+        <i class="fa-solid fa-house"></i> Painel Geral
+      </a>
+      <span class="opacity-60">Estação 3 de 7</span>
+    </nav>
+
+    <!-- Header -->
+    <header class="max-w-4xl mx-auto border-b-4 border-haskell-primary pb-4 mb-8">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-2">
+        <div>
+          <span class="text-xs uppercase tracking-widest font-extrabold opacity-75">Trilha Haskell</span>
+          <h1 class="text-3xl font-black mt-1">Módulo 3: Funções e Tipos</h1>
+        </div>
+        <button id="devSkip" class="self-start md:self-auto text-xs px-3 py-1 bg-white border border-haskell-primary/30 rounded shadow-sm hover:bg-haskell-primary hover:text-white transition font-medium">
+          <i class="fa-solid fa-forward-step mr-1"></i> Pular Vídeo (Dev Mode)
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Player Area -->
+    <main class="max-w-4xl mx-auto">
+      <div class="relative group">
+        <video id="player" class="w-full aspect-video bg-black rounded-2xl shadow-2xl border-4 border-white" controls>
+          <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4" type="video/mp4">
+          Seu navegador não suporta HTML5.
+        </video>
+        <!-- Unlocked alert overlay (hidden initially) -->
+        <div id="unlockAlert" class="absolute top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg flex items-center gap-2 transform translate-y-2 opacity-0 transition-all duration-500 pointer-events-none text-sm font-bold">
+          <i class="fa-solid fa-circle-check"></i> Estação Liberada!
+        </div>
+      </div>
+
+      <!-- Action Footer -->
+      <div class="mt-8 flex flex-col sm:flex-row justify-between items-center gap-4">
+        <p class="text-sm opacity-80 text-center sm:text-left">
+          <i class="fa-solid fa-circle-info mr-1"></i> 
+          Assista ao vídeo completo para habilitar o botão de avanço.
+        </p>
+        <button id="nextBtn" disabled 
+                class="w-full sm:w-auto bg-haskell-primary text-white font-extrabold py-3.5 px-10 rounded-xl opacity-50 cursor-not-allowed transition-all duration-300 shadow-md">
+          Próxima Estação <i class="fa-solid fa-arrow-right ml-1"></i>
+        </button>
+      </div>
+    </main>
+  </div>
+
+  <!-- Footer Info -->
+  <footer class="max-w-4xl mx-auto w-full text-center text-xs opacity-60 mt-12 pt-4 border-t border-haskell-primary/20">
+    Desenvolvimento Web Estático - Trilha de Estações de Aprendizagem
+  </footer>
+
+  <script>
+    const video = document.getElementById('player');
+    const btn = document.getElementById('nextBtn');
+    const devSkip = document.getElementById('devSkip');
+    const unlockAlert = document.getElementById('unlockAlert');
+
+    function unlockButton() {
+      btn.disabled = false;
+      btn.classList.remove('opacity-50', 'cursor-not-allowed');
+      btn.classList.add('hover:bg-opacity-90', 'hover:scale-102', 'shadow-lg');
+      
+      // Alert animation
+      unlockAlert.classList.remove('opacity-0', 'translate-y-2');
+      unlockAlert.classList.add('opacity-100', 'translate-y-0');
+    }
+
+    // When video finishes playing
+    video.onended = () => {
+      unlockButton();
+    };
+
+    // Skip video for easy client demos
+    devSkip.onclick = () => {
+      video.currentTime = video.duration - 1;
+      video.play();
+    };
+
+    // Save progress and go to next module
+    btn.onclick = () => {
+      try {
+        let completed = localStorage.getItem('modules_completed');
+        completed = completed ? JSON.parse(completed) : [];
+        if (!completed.includes('m3')) {
+          completed.push('m3');
+          localStorage.setItem('modules_completed', JSON.stringify(completed));
+        }
+      } catch (e) {
+        console.error(e);
+      }
+      window.location.href = 'm4.html';
+    };
+
+    // Check if previously completed (allow quick click if already completed)
+    window.addEventListener('DOMContentLoaded', () => {
+      try {
+        const completed = localStorage.getItem('modules_completed');
+        if (completed && JSON.parse(completed).includes('m3')) {
+          unlockButton();
+        }
+      } catch (e) {}
+    });
+  </script>
+</body>
+</html>

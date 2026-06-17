@@ -1,0 +1,13 @@
+{
+  "name": "learning-portal",
+  "version": "1.0.0",
+  "description": "Learning Portal - Haskell & Oh My!",
+  "main": "index.html",
+  "scripts": {
+    "predeploy": "echo 'Deploying static files to GitHub Pages...'",
+    "deploy": "gh-pages -d ."
+  },
+  "devDependencies": {
+    "gh-pages": "^6.1.1"
+  }
+}
